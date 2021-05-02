@@ -1,5 +1,6 @@
 import { dbContext } from '../db/DbContext'
-import { BadRequest } from '../utils/Errors'
+import { BadRequest, Forbidden } from '../utils/Errors'
+
 // import { logger } from '../utils/Logger'
 
 class BugsService {
@@ -26,7 +27,19 @@ class BugsService {
   }
 
   async editBug(body) {
+    const existingBug = await dbContext.Bugs.findOne({ _id: body.id })
+    if (existingBug.closed) {
+      throw new Forbidden('Bug is Closed Cannot Edit')
+    }
     const data = await dbContext.Bugs.findOneAndUpdate({ _id: body.id }, { title: body.title, description: body.description }, { new: true }).populate('creator')
+    if (!data) {
+      throw new BadRequest('Invalid Id')
+    }
+    return data
+  }
+
+  async closeBug(id) {
+    const data = await dbContext.Bugs.findOneAndUpdate({ _id: id }, { closed: true }, { new: true })
     if (!data) {
       throw new BadRequest('Invalid Id')
     }
