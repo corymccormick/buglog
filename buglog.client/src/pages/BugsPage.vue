@@ -27,7 +27,6 @@
 
 <script>
 import { bugsService } from '../services/BugsService'
-
 import { reactive, onMounted, computed } from 'vue'
 import { AppState } from '../AppState'
 export default {
