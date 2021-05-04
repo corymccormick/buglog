@@ -1,12 +1,24 @@
 <template>
-  <div class="bugDetails">
-    CHOSEN BUGS DETAILS AND COMMENTS
-    <br />
-    {{ state.bugs.title }}
-    <br />
-    {{ state.bugs.creator.name }}
-    <br />
-    {{ state.bugs.description }}
+  <div class="bugDetails container-fluid" v-if="state.bugs.id">
+    <div class="row">
+      <div class="col-md-8 ml-2">
+        title: <span class="titlesize"> {{ state.bugs.title }}</span> <br>
+      </div>
+      <div :class="{'closed-color': state.bugs.closed} ">
+        status: {{ state.bugs.closed ? 'closed': 'open' }}
+      </div>
+      <div class="col-md-4 ml-2">
+        <img :src="state.bugs.creator.picture" alt=""><br>created by: {{ state.bugs.creator.name }}
+      </div>
+    </div>
+    <div class="row  ml-2">
+      <div class="col-6 mt-3 mb-5 card">
+        <p>
+          {{ state.bugs.description }}
+        </p>
+      </div>
+    </div>
+    <span>Notes Go Here</span>
   </div>
 </template>
 
@@ -38,5 +50,12 @@ export default {
 </script>
 
 <style>
+.titlesize{
+  font-size: 40px;
+}
+.closed-color{
+  color: red;
+
+}
 
 </style>

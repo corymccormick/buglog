@@ -4,8 +4,10 @@
       <td>{{ bugProp.title }}  </td>
     </router-link>
     <td>{{ bugProp.creator.name }} </td>
-    <td>{{ bugProp.closed }} </td>
-    <td> {{ bugProp.updatedAt }}</td>
+    <td :class="{'closed-color': bugProp.closed} ">
+      {{ bugProp.closed ? 'closed': 'open' }}
+    </td>
+    <td> {{ dateString }}</td>
   </tr>
 </template>
 
@@ -21,17 +23,35 @@ export default {
     }
 
   },
+  computed: {
+    dateString() {
+      let [month, date, year] = new Date(this.bugProp.updatedAt).toLocaleDateString('en-US').split('/')
+      if (month < 10) {
+        month = '0' + month
+      }
+      if (date < 10) {
+        date = '0' + date
+      }
+      return `${month}/${date}/${year}`
+    }
+  },
   setup() {
     const state = reactive({
-      bug: computed(() => AppState.boards)
+      bug: computed(() => AppState.bugs)
+
     })
     return {
       state
+
     }
   }
 }
 </script>
 
 <style>
+.closed-color{
+  color: red;
+
+}
 
 </style>
